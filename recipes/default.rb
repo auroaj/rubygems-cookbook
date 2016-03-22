@@ -21,8 +21,8 @@
 
 # gem_package sources
 if node['rubygems']['gem_disable_default'] then
-  execute "gem sources --remove http://rubygems.org" do
-    only_if "gem sources --list | grep 'http://rubygems.org'"
+  execute "gem sources --remove https://rubygems.org" do
+    only_if "gem sources --list | grep 'https://rubygems.org'"
   end.run_action(:run)
 end
 
@@ -34,13 +34,13 @@ end
 
 # chef_gem sources
 if node['rubygems']['chef_gem_disable_default'] then
-  execute "/opt/chef/embedded/bin/gem sources --remove http://rubygems.org/" do
-    only_if "gem sources --list | grep 'http://rubygems.org'"
+  execute "/opt/chef/embedded/bin/gem sources --remove https://rubygems.org/" do
+    only_if "/opt/chef/embedded/bin/gem sources --list | grep 'https://rubygems.org'"
   end.run_action(:run)
 end
 
 node['rubygems']['chef_gem_sources'].each do |source|
   execute "/opt/chef/embedded/bin/gem sources --add #{source}" do
-    not_if "gem sources --list | grep '#{source}'"
+    not_if "/opt/chef/embedded/bin/gem sources --list | grep '#{source}'"
   end.run_action(:run)
 end
